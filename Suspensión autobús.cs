@@ -1,11 +1,11 @@
-using Sandbox.ModAPI.Ingame;
+﻿using Sandbox.ModAPI.Ingame;
 
 
 /// <file>Suspensión autobús.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
 /// <date>2022-05-22</date>
-/// <version>0.1.0</version>
+/// <version>0.2.0</version>
 /// <note>Made just for internal use</note>
 
 
@@ -26,14 +26,19 @@ namespace ScriptingClass {
         // Start copying to game after this text
 
 
-        bool mode;                                                                  // Current mode: true to driving, false to picking-up
+        bool _mode;                                                                     // Current mode: true to driving, false to picking-up
+
+        readonly string _nameAllWheelSuspensionGroup = "Suspensiones bus";              // Group of all wheel suspensions
+        readonly string _nameLeftWheelSuspensionGroup = "Suspensiones izq. bus";        // Group of all left wheel suspensions
+        readonly string _nameRightWheelSuspensionGroup = "Suspensiones der. bus";       // Group of all right wheel suspensions
+
 
         /// <summary>
         /// Class constructor
         /// Set-up all variables and programmable block screens
         /// </summary>
         public Program() {
-            mode = true;
+            _mode = true;
         }
 
         /// <summary>
@@ -43,24 +48,33 @@ namespace ScriptingClass {
         /// <param name="argument">Argument given</param>
         /// <param name="updateSource">"Who" ran the programmable block</param>
         public void Main(string argument, UpdateType updateSource) {
-            switch(argument.ToLower()) {                                            // Switch to choose the action
-                case "bajar":                                                       // Picking-up passengers mode
+            List<IMyMotorSuspension> allSuspensions = new List<IMyMotorSuspension>();    // Wheel suspensions group
+            List<IMyMotorSuspension> leftSuspensions = new List<IMyMotorSuspension>();   // Wheel suspensions group
+            List<IMyMotorSuspension> rightSuspensions = new List<IMyMotorSuspension>();  // Wheel suspensions group
+
+            GridTerminalSystem.GetBlockGroupWithName(_nameAllWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(allSuspensions);
+            GridTerminalSystem.GetBlockGroupWithName(_nameLeftWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(leftSuspensions);
+            GridTerminalSystem.GetBlockGroupWithName(_nameRightWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(rightSuspensions);
+
+
+            switch(argument.ToLower()) {                                                // Switch to choose the action
+                case "bajar":                                                           // Picking-up passengers mode
                     Echo("Bajando suspensión");
                     break;
-                case "invertir":                                                    // Invert current mode
-                    if(mode) {
+                case "invertir":                                                        // Invert current mode
+                    if(_mode) {
                         Echo("Bajando suspensión");
                     }
                     else {
                         Echo("Subiendo suspensión");
                     }
 
-                    mode = !mode;
+                    _mode = !_mode;
                     break;
-                case "subir":                                                       // Driving mode
+                case "subir":                                                           // Driving mode
                     Echo("Subiendo suspensión");
                     break;
-                default:                                                            // Just-in-case
+                default:                                                                // Just-in-case
                     break;
             }
         }
