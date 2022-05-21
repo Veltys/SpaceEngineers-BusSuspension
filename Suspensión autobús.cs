@@ -1,11 +1,11 @@
-﻿using Sandbox.ModAPI.Ingame;
+using Sandbox.ModAPI.Ingame;
 
 
 /// <file>Suspensión autobús.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
-/// <date>2022-05-21</date>
-/// <version>0.0.1</version>
+/// <date>2022-05-22</date>
+/// <version>0.1.0</version>
 /// <note>Made just for internal use</note>
 
 
@@ -26,12 +26,14 @@ namespace ScriptingClass {
         // Start copying to game after this text
 
 
+        bool mode;                                                                  // Current mode: true to driving, false to picking-up
+
         /// <summary>
         /// Class constructor
         /// Set-up all variables and programmable block screens
         /// </summary>
         public Program() {
-
+            mode = true;
         }
 
         /// <summary>
@@ -41,7 +43,26 @@ namespace ScriptingClass {
         /// <param name="argument">Argument given</param>
         /// <param name="updateSource">"Who" ran the programmable block</param>
         public void Main(string argument, UpdateType updateSource) {
-            Echo(argument);
+            switch(argument.ToLower()) {                                            // Switch to choose the action
+                case "bajar":                                                       // Picking-up passengers mode
+                    Echo("Bajando suspensión");
+                    break;
+                case "invertir":                                                    // Invert current mode
+                    if(mode) {
+                        Echo("Bajando suspensión");
+                    }
+                    else {
+                        Echo("Subiendo suspensión");
+                    }
+
+                    mode = !mode;
+                    break;
+                case "subir":                                                       // Driving mode
+                    Echo("Subiendo suspensión");
+                    break;
+                default:                                                            // Just-in-case
+                    break;
+            }
         }
 
 
