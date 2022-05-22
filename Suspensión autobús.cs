@@ -5,7 +5,7 @@
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
 /// <date>2022-05-22</date>
-/// <version>0.2.0</version>
+/// <version>1.0.0</version>
 /// <note>Made just for internal use</note>
 
 
@@ -28,6 +28,10 @@ namespace ScriptingClass {
 
         bool _mode;                                                                     // Current mode: true to driving, false to picking-up
 
+        readonly float _maxHeight = -0.3200F;                                           // Maximum suspension height
+        readonly float _minHeight = 0.0500F;                                            // Minimum suspension height
+        readonly float _normalHeight = -0.1600F;                                        // Normal suspension height
+
         readonly string _nameAllWheelSuspensionGroup = "Suspensiones bus";              // Group of all wheel suspensions
         readonly string _nameLeftWheelSuspensionGroup = "Suspensiones izq. bus";        // Group of all left wheel suspensions
         readonly string _nameRightWheelSuspensionGroup = "Suspensiones der. bus";       // Group of all right wheel suspensions
@@ -40,6 +44,22 @@ namespace ScriptingClass {
         public Program() {
             _mode = true;
         }
+
+
+        /// <summary>
+        /// ModifySuspension private method
+        /// Modify suspension height
+        /// </summary>
+        /// <param name="suspension">Suspension to modify</param>
+        /// <param name="height">Height to set suspension</param>
+        private void ModifySuspension(List<IMyMotorSuspension> suspension, float height) {
+            ushort i;
+
+            for(i = 0; i < suspension.Count; i++) {
+                suspension[i].Height = height;
+            }
+        }
+
 
         /// <summary>
         /// Main public method
@@ -59,22 +79,32 @@ namespace ScriptingClass {
 
             switch(argument.ToLower()) {                                                // Switch to choose the action
                 case "bajar":                                                           // Picking-up passengers mode
-                    Echo("Bajando suspensión");
+                    ModifySuspension(leftSuspensions, _maxHeight);
+                    ModifySuspension(rightSuspensions, _minHeight);
+
+                    _mode = false;
+
                     break;
                 case "invertir":                                                        // Invert current mode
-                    if(_mode) {
-                        Echo("Bajando suspensión");
+                    if(_mode) {                                                         // Switch to picking-up passengers mode
+                        ModifySuspension(leftSuspensions, _maxHeight);
+                        ModifySuspension(rightSuspensions, _minHeight);
                     }
-                    else {
-                        Echo("Subiendo suspensión");
+                    else {                                                              // Switch to driving mode
+                        ModifySuspension(allSuspensions, _normalHeight);
                     }
 
                     _mode = !_mode;
+
                     break;
                 case "subir":                                                           // Driving mode
-                    Echo("Subiendo suspensión");
+                    ModifySuspension(allSuspensions, _normalHeight);
+
+                    _mode = true;
+
                     break;
                 default:                                                                // Just-in-case
+                    Echo("Please, run this program with an appropiate argument");
                     break;
             }
         }
