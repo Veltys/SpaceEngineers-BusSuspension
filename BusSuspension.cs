@@ -5,7 +5,7 @@ using Sandbox.ModAPI.Ingame;
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
 /// <date>2022-05-23</date>
-/// <version>1.0.1</version>
+/// <version>1.0.2</version>
 /// <note>Made just for internal use</note>
 
 
@@ -77,7 +77,7 @@ namespace ScriptingClass {
             GridTerminalSystem.GetBlockGroupWithName(_nameRightWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(rightSuspensions);
 
 
-            switch(argument.ToLower()) {                                                // Switch to choose the action
+            switch(argument.ToLowerInvariant()) {                                           // Switch to choose the action
                 case "bajar":                                                           // Picking-up passengers mode
                     ModifySuspension(leftSuspensions, _maxHeight);
                     ModifySuspension(rightSuspensions, _minHeight);
