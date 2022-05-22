@@ -1,4 +1,4 @@
-# SpaceEngineers-SuspensionAutobus
+# SpaceEngineers-BusSuspension
 Quick suspension handler for a bus-like vehicle script for Space Engineers game
 
 

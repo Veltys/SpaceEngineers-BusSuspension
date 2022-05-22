@@ -1,7 +1,7 @@
 ﻿using Sandbox.ModAPI.Ingame;
 
 
-/// <file>Suspensión autobús.cs</file>
+/// <file>BusSuspension.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
 /// <date>2022-05-22</date>
