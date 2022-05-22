@@ -1,11 +1,11 @@
-using Sandbox.ModAPI.Ingame;
+﻿using Sandbox.ModAPI.Ingame;
 
 
 /// <file>BusSuspension.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
 /// <date>2022-05-23</date>
-/// <version>1.0.2</version>
+/// <version>1.1.0</version>
 /// <note>Made just for internal use</note>
 
 
@@ -35,6 +35,10 @@ namespace ScriptingClass {
         private const string _nameAllWheelSuspensionGroup = "Suspensiones bus";             // Group of all wheel suspensions
         private const string _nameLeftWheelSuspensionGroup = "Suspensiones izq. bus";       // Group of all left wheel suspensions
         private const string _nameRightWheelSuspensionGroup = "Suspensiones der. bus";      // Group of all right wheel suspensions
+
+        private const string _verbDown = "bajar";                                           // Verb for picking-up passengers mode
+        private const string _verbUp = "subir";                                             // Verb for driving mode
+        private const string _verbInvert = "invertir";                                      // Verb for invert mode
 
 
         /// <summary>
@@ -78,15 +82,21 @@ namespace ScriptingClass {
 
 
             switch(argument.ToLowerInvariant()) {                                           // Switch to choose the action
-                case "bajar":                                                           // Picking-up passengers mode
+                case _verbDown:                                                             // Picking-up passengers mode
                     ModifySuspension(leftSuspensions, _maxHeight);
                     ModifySuspension(rightSuspensions, _minHeight);
 
                     _mode = false;
 
                     break;
-                case "invertir":                                                        // Invert current mode
-                    if(_mode) {                                                         // Switch to picking-up passengers mode
+                case _verbUp:                                                               // Driving mode
+                    ModifySuspension(allSuspensions, _normalHeight);
+
+                    _mode = true;
+
+                    break;
+                case _verbInvert:                                                           // Invert current mode
+                    if(_mode) {                                                             // Switch to picking-up passengers mode
                         ModifySuspension(leftSuspensions, _maxHeight);
                         ModifySuspension(rightSuspensions, _minHeight);
                     }
@@ -97,13 +107,7 @@ namespace ScriptingClass {
                     _mode = !_mode;
 
                     break;
-                case "subir":                                                           // Driving mode
-                    ModifySuspension(allSuspensions, _normalHeight);
-
-                    _mode = true;
-
-                    break;
-                default:                                                                // Just-in-case
+                default:                                                                    // Just-in-case
                     Echo("Please, run this program with an appropiate argument");
                     break;
             }
