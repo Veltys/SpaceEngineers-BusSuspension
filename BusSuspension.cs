@@ -1,11 +1,11 @@
-﻿using Sandbox.ModAPI.Ingame;
+using Sandbox.ModAPI.Ingame;
 
 
 /// <file>BusSuspension.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
-/// <date>2022-05-22</date>
-/// <version>1.0.0</version>
+/// <date>2022-05-23</date>
+/// <version>1.0.1</version>
 /// <note>Made just for internal use</note>
 
 
@@ -26,15 +26,15 @@ namespace ScriptingClass {
         // Start copying to game after this text
 
 
-        bool _mode;                                                                     // Current mode: true to driving, false to picking-up
+        private bool _mode;                                                                 // Current mode: true to driving, false to picking-up
 
-        readonly float _maxHeight = -0.3200F;                                           // Maximum suspension height
-        readonly float _minHeight = 0.0500F;                                            // Minimum suspension height
-        readonly float _normalHeight = -0.1600F;                                        // Normal suspension height
+        private const float _maxHeight = -0.3200F;                                          // Maximum suspension height
+        private const float _minHeight = 0.0500F;                                           // Minimum suspension height
+        private const float _normalHeight = -0.1600F;                                       // Normal suspension height
 
-        readonly string _nameAllWheelSuspensionGroup = "Suspensiones bus";              // Group of all wheel suspensions
-        readonly string _nameLeftWheelSuspensionGroup = "Suspensiones izq. bus";        // Group of all left wheel suspensions
-        readonly string _nameRightWheelSuspensionGroup = "Suspensiones der. bus";       // Group of all right wheel suspensions
+        private const string _nameAllWheelSuspensionGroup = "Suspensiones bus";             // Group of all wheel suspensions
+        private const string _nameLeftWheelSuspensionGroup = "Suspensiones izq. bus";       // Group of all left wheel suspensions
+        private const string _nameRightWheelSuspensionGroup = "Suspensiones der. bus";      // Group of all right wheel suspensions
 
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace ScriptingClass {
         /// <param name="argument">Argument given</param>
         /// <param name="updateSource">"Who" ran the programmable block</param>
         public void Main(string argument, UpdateType updateSource) {
-            List<IMyMotorSuspension> allSuspensions = new List<IMyMotorSuspension>();    // Wheel suspensions group
-            List<IMyMotorSuspension> leftSuspensions = new List<IMyMotorSuspension>();   // Wheel suspensions group
-            List<IMyMotorSuspension> rightSuspensions = new List<IMyMotorSuspension>();  // Wheel suspensions group
+            List<IMyMotorSuspension> allSuspensions = new List<IMyMotorSuspension>();       // Wheel suspensions group
+            List<IMyMotorSuspension> leftSuspensions = new List<IMyMotorSuspension>();      // Wheel suspensions group
+            List<IMyMotorSuspension> rightSuspensions = new List<IMyMotorSuspension>();     // Wheel suspensions group
 
             GridTerminalSystem.GetBlockGroupWithName(_nameAllWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(allSuspensions);
             GridTerminalSystem.GetBlockGroupWithName(_nameLeftWheelSuspensionGroup).GetBlocksOfType<IMyMotorSuspension>(leftSuspensions);
@@ -90,7 +90,7 @@ namespace ScriptingClass {
                         ModifySuspension(leftSuspensions, _maxHeight);
                         ModifySuspension(rightSuspensions, _minHeight);
                     }
-                    else {                                                              // Switch to driving mode
+                    else {                                                                  // Switch to driving mode
                         ModifySuspension(allSuspensions, _normalHeight);
                     }
 
