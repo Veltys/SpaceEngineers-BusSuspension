@@ -4,8 +4,8 @@
 /// <file>BusSuspension.cs</file>
 /// <summary>Autobus vehicle suspension manager</summary>
 /// <author>Veltys</author>
-/// <date>2022-05-23</date>
-/// <version>1.1.0</version>
+/// <date>2022-11-20</date>
+/// <version>1.1.1</version>
 /// <note>Made just for internal use</note>
 
 
@@ -18,10 +18,10 @@ namespace ScriptingClass {
     /// </summary>
     class Program {
         // Some stuff for avoiding some environment errors
-        IMyGridTerminalSystem? GridTerminalSystem = null;
-        IMyGridProgramRuntimeInfo? Runtime = null;
-        Action<string>? Echo = null;
-        IMyTerminalBlock? Me = null;
+        readonly IMyGridTerminalSystem? GridTerminalSystem = null;
+        readonly IMyGridProgramRuntimeInfo? Runtime = null;
+        readonly Action<string>? Echo = null;
+        readonly IMyTerminalBlock? Me = null;
 
         // Start copying to game after this text
 
@@ -56,7 +56,7 @@ namespace ScriptingClass {
         /// </summary>
         /// <param name="suspension">Suspension to modify</param>
         /// <param name="height">Height to set suspension</param>
-        private void ModifySuspension(List<IMyMotorSuspension> suspension, float height) {
+        private static void ModifySuspension(List<IMyMotorSuspension> suspension, float height) {
             ushort i;
 
             for(i = 0; i < suspension.Count; i++) {
@@ -109,6 +109,7 @@ namespace ScriptingClass {
                     break;
                 default:                                                                    // Just-in-case
                     Echo("Please, run this program with an appropiate argument");
+
                     break;
             }
         }
